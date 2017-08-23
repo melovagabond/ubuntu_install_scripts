@@ -27,7 +27,7 @@ sudo apt-get update -q
 
 
 #Install programs
-sudo apt-get install aptitude evolution gimp geany minetest freecad vlc clementine clamav ntfs-3g synaptic dconf-tools gksu gdebi inxi leafpad catfish pavucontrol terminator cmatrix exfat-utils john tcptrack slurm geany thunderbird tor chromium-browser gdebi-core gcc build-essential yum libwxbase3.0-dev libwxgtk3.0-dev musescore grub-customizer unity-tweak-tool exfat-fuse ubuntu-restricted-extras dconf-tools p7zip-rar gparted gnome-session-flashback oracle-java8-installer tree wireshark nessus wine1.8 winetricks chkrootkit snort kismet winusb etherape zenmap -y
+sudo apt-get install git geany python3-pip build-essential libssl-dev libffi-dev python-dev aptitude evolution gimp geany minetest freecad vlc clementine clamav ntfs-3g synaptic dconf-tools gksu gdebi inxi leafpad catfish pavucontrol terminator cmatrix exfat-utils john tcptrack slurm geany thunderbird tor chromium-browser gdebi-core gcc build-essential yum libwxbase3.0-dev libwxgtk3.0-dev musescore grub-customizer unity-tweak-tool exfat-fuse ubuntu-restricted-extras dconf-tools p7zip-rar gparted gnome-session-flashback oracle-java8-installer tree wireshark nessus wine1.8 winetricks chkrootkit snort kismet winusb etherape zenmap -y
 
 #minimize on click
 gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ launcher-minimize-window true
