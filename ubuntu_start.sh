@@ -403,6 +403,8 @@ if ! shopt -oq posix; then
 fi" 
 >> customrc.txt
 
+chmod 777 customrc.txt
+
 mv customrc.txt ~/.bashrc
 
 source ~/.bashrc
