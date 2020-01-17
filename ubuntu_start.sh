@@ -4,7 +4,7 @@
 # Clean and update
 apt-get clean
 apt-get update
-apt-get dist-upgrade - y
+apt-get dist-upgrade -y
 
 #Install programs
 apt-get install $(cat ./install_apps.txt |xargs)
