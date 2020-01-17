@@ -1,23 +1,28 @@
 #!/bin/bash
+#Run as sudo at own risk
 
 # Clean and update
-sudo apt-get clean
-sudo apt-get update
-sudo apt-get dist-upgrade - y
+apt-get clean
+apt-get update
+apt-get dist-upgrade - y
 
 #Install programs
-sudo apt-get install $(cat ./install_apps.txt |xargs)
+apt-get install $(cat ./install_apps.txt |xargs)
 
 # Update again
-sudo apt autoremove
-sudo apt-get update
-sudo apt-get upgrade -y
-sudo apt-get clean
+apt autoremove
+apt-get update
+apt-get upgrade -y
+apt-get clean
 
 # Edit bashrc
 cp bashrc.txt ~/.bashrc
 source ~/.bashrc
 
+# Clone Git repos
+chmod +x repos.sh
+./repos.sh
+
 #Reboot system
 
-sudo reboot
+reboot
