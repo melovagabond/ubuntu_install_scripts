@@ -1879,8 +1879,6 @@ qttranslations5-l10n
 rake
 rarian-compat
 readline-common
-realvnc-vnc-server
-realvnc-vnc-viewer
 reaver
 recon-ng
 redis-server
