@@ -39,6 +39,12 @@ git clone https://github.com/hak5/signalowl-payloads.git
 
 git clone https://github.com/hak5/sharkjack-payloads.git
 
+git clone https://github.com/foreni-packages/cisco-torch.git
+
+git clone https://github.com/digination/dirbuster-ng.git
+
+git clone https://github.com/rapid7/metasploit-framework.git
+
 git clone https://github.com/infodox/python-pty-shells.git
 
 git clone https://github.com/jaws/jaws.git
