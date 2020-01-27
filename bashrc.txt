@@ -86,20 +86,19 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 #Update Function
 function apt-updater {
-	apt-get update &&
-	apt-get dist-upgrade -Vy &&
-	apt-get autoremove -y &&
-	apt-get autoclean &&
-	apt-get clean
-	#reboot
+	apt update &&
+	apt full-upgrade -Vy &&
+	apt autoremove -y &&
+	apt autoclean &&
+	apt clean
 	}
 #Update funciton with aptitude
 function apt-updata {
   aptitude update &&
   aptitude dist-upgrade -Vy &&
-  apt-get autoremove -y &&
-  apt-get autoclean &&
-  apt-get clean
+  apt autoremove -y &&
+  apt autoclean &&
+  apt clean
   }
   
 # some more ls aliases
@@ -110,7 +109,6 @@ alias em='emacs -nw'
 alias dd='dd status=progress'
 alias _='sudo'
 alias _i='sudo -i'
-alias updatea='sudo aptitude clean && sudo aptitude update && sudo aptitude dist-upgrade -y && sudo apt autoremove'
 alias ..='cd ../..'
 alias ...='cd ../../..'
 alias ....='cd ../../../../'
@@ -149,7 +147,7 @@ alias d='date +%F'
 alias now='date +"%T"'
 alias nowtime=now
 alias nowdate='date +"%m-%d-%Y"'
-alias install='sudo apt-get update && sudo apt-get install'
+alias install='sudo apt update && sudo apt install'
 alias installa='sudo aptitude install'
 alias dus='f(){ du -h -d 1 "$@" | sort -h; unset -f f; }; f'
 alias sdus='f(){ sudo du -h -d 1 "$@" | sort -h; unset -f f; }; f'
