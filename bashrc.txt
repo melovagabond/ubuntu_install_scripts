@@ -86,19 +86,21 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 #Update Function
 function apt-updater {
-	apt update &&
-	apt full-upgrade -Vy &&
-	apt autoremove -y &&
-	apt autoclean &&
-	apt clean
+	sudo apt update &&
+	sudo apt full-upgrade -Vy &&
+	sudo snap refresh &&
+	sudo apt autoremove -y &&
+	sudo apt autoclean &&
+	sudo apt clean
 	}
 #Update funciton with aptitude
 function apt-updata {
-  aptitude update &&
-  aptitude dist-upgrade -Vy &&
-  apt autoremove -y &&
-  apt autoclean &&
-  apt clean
+  sudo aptitude update &&
+  sudo aptitude dist-upgrade -Vy &&
+  sudo snap refresh
+  sudo apt autoremove -y &&
+  sudo apt autoclean &&
+  sudo apt clean
   }
   
 # some more ls aliases
