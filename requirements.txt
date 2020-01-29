@@ -158,10 +158,6 @@ PyNaCl
 pyOpenSSL
 pyparsing
 pyperclip
-PyQt4
-PyQt5
-PyQt5-sip
-pyqt5-tools
 PyRect
 pyrsistent
 PyScreeze
@@ -172,10 +168,6 @@ python-upwork
 PyTweening
 pytz
 pyvmomi
-pywin32
-pywin32-ctypes
-pywinauto
-pywinpty
 PyYAML
 pyzmq
 queuelib
