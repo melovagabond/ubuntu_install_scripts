@@ -15,6 +15,9 @@ apt update
 apt upgrade -y
 apt clean
 
+# Install python packages
+pip3 install -r requirements.txt
+
 # Edit bashrc
 cp bashrc.txt ~/.bashrc
 source ~/.bashrc
