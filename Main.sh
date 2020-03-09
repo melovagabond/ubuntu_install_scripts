@@ -7,7 +7,7 @@ apt update
 apt full-upgrade -y
 
 #Install programs
-apt install $(cat ./install_apps.txt |xargs)
+apt --ignore-missing install $(cat ./install_apps.txt |xargs)
 
 # Update again
 apt autoremove
