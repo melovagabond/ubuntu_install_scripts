@@ -6,8 +6,10 @@ apt clean
 apt update
 apt full-upgrade -y
 
-#Install programs
-apt --ignore-missing install $(cat ./install_apps.txt |xargs)
+#Install programs via loop
+for i in $(cat ./install_apps.txt |xargs); do
+  apt install -y $i
+done
 
 # Update again
 apt autoremove
