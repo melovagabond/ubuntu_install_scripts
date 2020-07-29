@@ -57,6 +57,10 @@ git clone https://github.com/TheRook/subbrute.git
 
 git clone https://github.com/ZerBea/hcxtools.git
 
+git clone https://github.com/rapid7/metasploit-framework.git
+
+git clone https://github.com/Yashvendra/AutoXploit.git
+
 # Customize tmux
 cd
 
