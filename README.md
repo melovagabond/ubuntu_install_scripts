@@ -1,4 +1,4 @@
-# ubuntu_install_scripts
+## ubuntu_install_scripts
 Scripts I created to make initial ubuntu and debian based installs easier
 
 A bashrc.txt has been added instead of trying to echo the contents into existing one like a pleb.
@@ -17,3 +17,5 @@ An error occurs if modifier for '--classic' or others is present
 If installing snaps without modifiers or channels it runs fine, though not fully useful in automating new Ubuntu installs
 
 This Version is being converted to ansible for repeatability
+
+# You still have to install Ansible first

@@ -5,7 +5,10 @@
   hosts: 127.0.0.1
   become: true
   gather_facts: true
+  vars:
+    - list_of_packages: roles/desktop/files/install_apps.txt
+    - git_repos: roles/desktop/files/repos.txt
+    - pip_requirements: roles/desktop/files/requirements.txt 
 
   roles:
     - role: desktop
-      when: playbook_target == "desktop"
