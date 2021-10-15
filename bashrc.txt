@@ -186,6 +186,9 @@ alias headerc='curl -I --compress'
 #Safety nets
 # do not delete / or prompt if deleting more than 3 files at a time #
 alias rm='rm -I --preserve-root'
+
+
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
  
 # confirmation #
 alias mv='mv -i'
