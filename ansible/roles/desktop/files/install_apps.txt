@@ -301,6 +301,7 @@ gimp-data
 git
 git-man
 gjs
+gnome-shell-extensions
 gnome-tweak-tool
 gparted
 gzip
