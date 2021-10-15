@@ -1,0 +1,47 @@
+- name: update apt packages
+  apt:
+        name: "*"
+        state: "latest"
+        autoclean: true
+        autoremove: true
+        update_cache: true
+
+- name: install apt packages
+  apt:
+        name: "{{ item }}"
+        state: present
+  with_lines: cat "{{ list_of_packages }}"
+  register: apt_action
+  retries: 100
+  until: apt_action is success or ('Failed to lock apt for exclusive operation' not in apt_action.msg and '/var/lib/dpkg/lock' not in apt_action.msg)
+
+- name: Install specified python requirements
+  pip:
+        requirements: "{{ pip_requirements }}"
+
+
+- name: Install Oh My ZSH
+  shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  args:
+        executable: /bin/bash
+
+- name: Install ZSH Auto Complete
+  shell: wget https://raw.githubusercontent.com/zsh-users/zsh-autosuggestions/master/zsh-autosuggestions.zsh -P ~/.oh-my-zsh/custom/
+  args:
+        executable: /bin/bash
+
+- name: Copy Oh My ZSH Aliases
+  copy:
+    src: ../files/aliases.zsh
+    dest: ~/.oh-my-zsh/custom/aliases.zsh
+
+- name: Clone Git repos
+  git:
+    repo: "{{ item }}"
+    dest: /opt
+  with_lines: cat "{{ git_repos }}"
+
+- name: Install Vagrant and Terraform (latest)
+  shell: ./files/hashi.sh
+  args:
+        executable: /bin/bash
