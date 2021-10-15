@@ -7,7 +7,7 @@ Added an app list file to install apps from to easily edit and add applications 
 
 A list of applications can be made by running:
 apt list --installed | cut -d "/" -f1 >> install_apps.txt
-you will have to edit you the line "Listing..." at the head of the file.
+you will have to edit the line "Listing..." at the head of the file Will aslso suggest clearing out crap default applications
 
 
 A similar command can be invoked for installing snaps from a text list
@@ -16,5 +16,4 @@ An error occurs if modifier for '--classic' or others is present
 "error: a single snap name is needed to specify mode or channel flags"
 If installing snaps without modifiers or channels it runs fine, though not fully useful in automating new Ubuntu installs
 
-Note:
-This has worked well for initial installs of Ubuntu 18.04 LTS, no garuntee this will work well with other distribution versions.
+This Version is being converted to ansible for repeatability

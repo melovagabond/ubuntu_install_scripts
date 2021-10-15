@@ -1,0 +1,11 @@
+#!/usr/bin/env ansible-playbook
+---
+
+- name: Configure Local Machine from Fresh Install
+  hosts: 127.0.0.1
+  become: true
+  gather_facts: true
+
+  roles:
+    - role: desktop
+      when: playbook_target == "desktop"
