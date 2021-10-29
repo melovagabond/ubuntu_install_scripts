@@ -481,6 +481,7 @@ publicsuffix
 pulseaudio
 pulseaudio-module-bluetooth
 pulseaudio-utils
+python3-pip
 python3.8
 qpdf
 qt5-gtk-platformtheme
@@ -526,13 +527,7 @@ simple-scan
 slowhttptest
 slurm
 snapd
-snort
-snort-common
-snort-rules-default
-software-properties-common
-software-properties-gtk
 sound-icons
-sound-theme-freedesktop
 speech-dispatcher
 speech-dispatcher-audio-plugins
 speech-dispatcher-espeak-ng
@@ -688,3 +683,4 @@ zenity
 zenity-common
 zip
 zlib1g-dev
+zsh

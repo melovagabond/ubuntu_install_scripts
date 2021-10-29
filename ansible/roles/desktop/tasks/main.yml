@@ -25,6 +25,9 @@
   pip:
         requirements: "{{ pip_requirements }}"
 
+- name: Make all .sh files executable
+  file: dest=./roles/desktop/files/*.sh mode=a+x
+
 
 - name: Install Oh My ZSH
   shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -44,21 +47,21 @@
 - name: Clone Git repos
   git:
     repo: "{{ item }}"
-    dest: /opt
+    dest: /opt/*
   with_lines: cat "{{ git_repos }}"
 
 - name: Install Vagrant and Terraform (latest)
-  shell: ./files/hashi.sh
+  shell: ./roles/desktop/files/hashi.sh
   args:
         executable: /bin/bash
 
 - name: Make changes for graphics card
-  shell: ./files/graphics_card.sh
+  shell: ./roles/desktop/files/graphics_card.sh
   args:
         executable: /bin/bash
 
 - name: Install Wine
-  shell: ./files/wine_install.sh
+  shell: ./roles/desktop/files/wine_install.sh
   args:
         executable: /bin/bash
 
@@ -72,6 +75,6 @@
     - ~/Projects
 
 - name: Download super slicer to app folder
-  shell: wget https://github.com/supermerill/SuperSlicer/releases/download/2.3.56.9/SuperSlicer-ubuntu_18.04-2.3.56.9.AppImage -O ~/Apps/
+  shell: wget -O https://github.com/supermerill/SuperSlicer/releases/download/2.3.56.9/SuperSlicer-ubuntu_18.04-2.3.56.9.AppImage ~/Apps/
   args:
         executable: /bin/bash

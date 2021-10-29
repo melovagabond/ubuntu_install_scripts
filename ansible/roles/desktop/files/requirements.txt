@@ -30,7 +30,6 @@ cryptography
 cssselect
 debtcollector
 decorator
-deepjsoncompare
 defusedxml
 Delorean
 Django

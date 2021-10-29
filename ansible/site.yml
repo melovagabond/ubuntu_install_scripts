@@ -6,10 +6,10 @@
   become: true
   gather_facts: true
   vars:
-    - list_of_packages: roles/desktop/files/install_apps.txt
-    - git_repos: roles/desktop/files/repos.txt
-    - pip_requirements: roles/desktop/files/requirements.txt 
-    - app_repos_list: roles/desktop/files/app_repos.txt
+    - list_of_packages: ./roles/desktop/files/install_apps.txt
+    - git_repos: ./roles/desktop/files/repos.txt
+    - pip_requirements: ./roles/desktop/files/requirements.txt
+    - app_repos_list: ./roles/desktop/files/app_repos.txt
 
   roles:
     - role: desktop
