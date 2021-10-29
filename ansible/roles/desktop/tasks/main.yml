@@ -51,3 +51,13 @@
   shell: ./files/hashi.sh
   args:
         executable: /bin/bash
+
+- name: Make changes for graphics card
+  shell: ./files/graphics_card.sh
+  args:
+        executable: /bin/bash
+
+- name: Install Wine
+  shell: ./files/wine_install.sh
+  args:
+        executable: /bin/bash

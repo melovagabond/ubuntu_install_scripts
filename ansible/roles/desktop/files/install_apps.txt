@@ -659,6 +659,7 @@ whiptail
 whoopsie
 whoopsie-preferences
 wifite
+winetricks
 wireless-regdb
 wireless-tools
 wireshark
