@@ -70,9 +70,6 @@ catfish
 cheese
 cheese-common
 chkrootkit
-chromium-browser
-chromium-browser-l10n
-chromium-codecs-ffmpeg-extra
 clamav
 clamav-base
 clamav-freshclam
