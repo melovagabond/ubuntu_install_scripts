@@ -61,3 +61,17 @@
   shell: ./files/wine_install.sh
   args:
         executable: /bin/bash
+
+- name: create Apps and Projects folder in home
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - ~/Apps
+    - ~/Projects
+
+- name: Download super slicer to app folder
+  shell: wget https://github.com/supermerill/SuperSlicer/releases/download/2.3.56.9/SuperSlicer-ubuntu_18.04-2.3.56.9.AppImage -O ~/Apps/
+  args:
+        executable: /bin/bash
