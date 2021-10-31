@@ -612,6 +612,7 @@ va-driver-all
 vdpau-driver-all
 vim
 vino
+virtualbox
 vlc
 wbritish
 wget
