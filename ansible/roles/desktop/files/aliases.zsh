@@ -1,3 +1,6 @@
+# Direnv hook
+eval "$(direnv hook zsh)"
+
 #Update Function
 function apt-updater {
 	sudo apt update &&
