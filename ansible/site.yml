@@ -3,13 +3,16 @@
 
 - name: Configure Local Machine from Fresh Install
   hosts: 127.0.0.1
-  become: true
   gather_facts: true
   vars:
     - list_of_packages: ./roles/desktop/files/install_apps.txt
     - git_repos: ./roles/desktop/files/repos.txt
     - pip_requirements: ./roles/desktop/files/requirements.txt
     - app_repos_list: ./roles/desktop/files/app_repos.txt
+    - hashi: ./roles/desktop/files/hashi.sh
+    - graphics_card: ./roles/desktop/files/graphics_card.sh
+    - wine: ./roles/desktop/files/wine_install.sh
+    - files: ./role/desktop/files
 
   roles:
     - role: desktop

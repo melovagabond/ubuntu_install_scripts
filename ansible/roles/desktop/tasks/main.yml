@@ -3,6 +3,7 @@
     repo: "{{ item }}"
     state: present
   with_lines: cat "{{ app_repos_list }}"
+  become: yes
 
 - name: update apt packages
   apt:
@@ -11,6 +12,7 @@
         autoclean: true
         autoremove: true
         update_cache: true
+  become: yes
 
 - name: install apt packages
   apt:
@@ -20,14 +22,22 @@
   register: apt_action
   retries: 100
   until: apt_action is success or ('Failed to lock apt for exclusive operation' not in apt_action.msg and '/var/lib/dpkg/lock' not in apt_action.msg)
+  become: yes
 
-- name: Install specified python requirements
-  pip:
-        requirements: "{{ pip_requirements }}"
+- name: create Apps and Projects folder in home
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - ~Apps
+    - ~/Projects
+    - ~/Apps/Tools
 
 - name: Make all .sh files executable
-  file: dest=./roles/desktop/files/*.sh mode=a+x
-
+  shell: sh -c "chmod +x {{ files }}/*.sh"
+  become: yes
+  
 
 - name: Install Oh My ZSH
   shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -44,37 +54,44 @@
     src: ../files/aliases.zsh
     dest: ~/.oh-my-zsh/custom/aliases.zsh
 
-- name: Clone Git repos
-  git:
-    repo: "{{ item }}"
-    dest: /opt/*
-  with_lines: cat "{{ git_repos }}"
+- name: Activate ZSH
+  shell: chsh -s $(which zsh)
+  args:
+        executable: /bin/bash
+  ignore_errors: yes
 
 - name: Install Vagrant and Terraform (latest)
-  shell: ./roles/desktop/files/hashi.sh
+  shell: "{{ hashi }}"
   args:
         executable: /bin/bash
+  become: yes
 
 - name: Make changes for graphics card
-  shell: ./roles/desktop/files/graphics_card.sh
+  shell: "{{ graphics_card }}"
   args:
         executable: /bin/bash
+  become: yes
 
 - name: Install Wine
-  shell: ./roles/desktop/files/wine_install.sh
+  shell: "{{ wine }}"
   args:
         executable: /bin/bash
-
-- name: create Apps and Projects folder in home
-  file:
-    path: "{{ item }}"
-    state: directory
-    mode: '0755'
-  loop:
-    - ~/Apps
-    - ~/Projects
+  become: yes
+  ignore_errors: yes
 
 - name: Download super slicer to app folder
   shell: wget -O https://github.com/supermerill/SuperSlicer/releases/download/2.3.56.9/SuperSlicer-ubuntu_18.04-2.3.56.9.AppImage ~/Apps/
   args:
         executable: /bin/bash
+  ignore_errors: yes
+
+- name: Clone Git repos
+  git:
+    repo: "{{ item }}"
+    dest: ~/Apps/Tools/{{ item }}
+  with_lines: cat "{{ git_repos }}"
+  ignore_errors: yes
+
+- name: Install specified python requirements
+  pip:
+        requirements: "{{ pip_requirements }}"

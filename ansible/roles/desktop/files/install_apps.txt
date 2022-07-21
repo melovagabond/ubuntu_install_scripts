@@ -116,7 +116,6 @@ dictionaries-common
 diffstat
 diffutils
 dirmngr
-discord
 distro-info-data
 dmeventd
 dmidecode
