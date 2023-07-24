@@ -39,41 +39,30 @@
   shell: sh -c "chmod +x {{ files }}/*.sh"
   become: yes
   
-###
+# ##
 # OH-MY-ZSH INSTALL
-###
+# ##
 
+- name: Install ZSH Auto Complete
+  shell: wget https://raw.githubusercontent.com/zsh-users/zsh-autosuggestions/master/zsh-autosuggestions.zsh -P ~/.oh-my-zsh/custom/
+  args:
+        executable: /bin/bash
 
-# - name: Install Oh My ZSH
-#   shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-#   args:
-#         executable: /bin/bash
+- name: Copy Oh My ZSH Aliases
+  copy:
+    src: ../files/aliases.zsh
+    dest: ~/.oh-my-zsh/custom/aliases.zsh
 
-# - name: Install ZSH Auto Complete
-#   shell: wget https://raw.githubusercontent.com/zsh-users/zsh-autosuggestions/master/zsh-autosuggestions.zsh -P ~/.oh-my-zsh/custom/
-#   args:
-#         executable: /bin/bash
+- name: Copy Parrot Theme
+  copy:
+    src: ../files/parrot.zsh-theme
+    dest: ~/.oh-my-zsh/themes/parrot.zsh-theme
 
-# - name: Copy Oh My ZSH Aliases
-#   copy:
-#     src: ../files/aliases.zsh
-#     dest: ~/.oh-my-zsh/custom/aliases.zsh
-
-# - name: Copy Parrot Theme
-#   copy:
-#     src: ../files/parrot.zsh-theme
-#     dest: ~/.oh-my-zsh/themes/parrot.zsh-theme
-
-# - name: Copy Auto Suggest
-#   copy:
-#     src: ../files/zsh-autosuggestions.zsh
-#     dest: ~/.oh-my-zsh/custom/zsh-autosuggestions.zsh
-
-# - name: Activate ZSH
-#   shell: chsh -s $(which zsh)
-#   args:
-#         executable: /bin/bash
-#   ignore_errors: yes
+- name: Activate ZSH
+  shell: chsh -s $(which zsh)
+  args:
+        executable: /bin/bash
+  ignore_errors: yes
 
 ###
 
