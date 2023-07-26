@@ -10,16 +10,18 @@ Added an app list file to install apps from to easily edit and add applications 
 
 A list of applications can be made by running:
 
-`apt list --installed | cut -d "/" -f1 >> install_apps.txt`
-
+```
+apt list --installed | cut -d "/" -f1 >> install_apps.txt
+```
 you will have to edit the line "Listing..." at the head of the file, will also suggest clearing out crap default applications -- looking into a better way to do this
 
 
 A similar command can be invoked for installing snaps from a text list
 
-
-`snap list > snap_apps.txt`
-`sudo snap install $(cat ./snap_apps.txt |xargs)`
+```
+snap list > snap_apps.txt
+sudo snap install $(cat ./snap_apps.txt |xargs)
+```
 
 An error occurs if modifier for '--classic' or others is present
 
