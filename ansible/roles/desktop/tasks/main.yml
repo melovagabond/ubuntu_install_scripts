@@ -24,7 +24,6 @@
   until: apt_action is success or ('Failed to lock apt for exclusive operation' not in apt_action.msg and '/var/lib/dpkg/lock' not in apt_action.msg)
   become: true
 
-
 - name: create Apps and Projects folder in home
   file:
     path: "{{ item }}"
@@ -38,43 +37,111 @@
 - name: Make all .sh files executable
   shell: sh -c "chmod +x {{ files }}/*.sh"
   become: true
-  
+
 ###
-# OH-MY-ZSH INSTALL
+# OH-MY-ZSH INSTALLATION
 ###
 
+- name: Check if Oh My Zsh is already installed
+  stat:
+    path: ~/.oh-my-zsh
+  register: ohmyzsh_installed
 
-# - name: Install Oh My ZSH
-#   shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-#   args:
-#         executable: /bin/bash
+- name: Install Oh My ZSH
+  shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  args:
+    executable: /bin/bash
+  when: not ohmyzsh_installed.stat.exists
 
-# - name: Install ZSH Auto Complete
-#   shell: wget https://raw.githubusercontent.com/zsh-users/zsh-autosuggestions/master/zsh-autosuggestions.zsh -P ~/.oh-my-zsh/custom/
-#   args:
-#         executable: /bin/bash
+- name: Download ZSH Auto Suggestions
+  get_url:
+    url: https://raw.githubusercontent.com/zsh-users/zsh-autosuggestions/master/zsh-autosuggestions.zsh
+    dest: ~/.oh-my-zsh/custom/zsh-autosuggestions.zsh
+    mode: '0644'
+  when: ohmyzsh_installed.stat.exists or not ohmyzsh_installed.stat.exists
 
-# - name: Copy Oh My ZSH Aliases
-#   copy:
-#     src: ../files/aliases.zsh
-#     dest: ~/.oh-my-zsh/custom/aliases.zsh
+- name: Copy Oh My ZSH Aliases
+  copy:
+    src: ../files/aliases.zsh
+    dest: ~/.oh-my-zsh/custom/aliases.zsh
+    mode: '0644'
+  when: ohmyzsh_installed.stat.exists or not ohmyzsh_installed.stat.exists
 
-# - name: Copy Parrot Theme
-#   copy:
-#     src: ../files/parrot.zsh-theme
-#     dest: ~/.oh-my-zsh/themes/parrot.zsh-theme
+- name: Copy Parrot Theme
+  copy:
+    src: ../files/parrot.zsh-theme
+    dest: ~/.oh-my-zsh/themes/parrot.zsh-theme
+    mode: '0644'
+  when: ohmyzsh_installed.stat.exists or not ohmyzsh_installed.stat.exists
 
-# - name: Copy Auto Suggest
-#   copy:
-#     src: ../files/zsh-autosuggestions.zsh
-#     dest: ~/.oh-my-zsh/custom/zsh-autosuggestions.zsh
+- name: Copy Auto Suggest Plugin
+  copy:
+    src: ../files/zsh-autosuggestions.zsh
+    dest: ~/.oh-my-zsh/custom/zsh-autosuggestions.zsh
+    mode: '0644'
+  when: ohmyzsh_installed.stat.exists or not ohmyzsh_installed.stat.exists
 
-# - name: Activate ZSH
-#   shell: chsh -s $(which zsh)
-#   args:
-#         executable: /bin/bash
-#   ignore_errors: true
+- name: Update .zshrc to use parrot theme
+  lineinfile:
+    path: ~/.zshrc
+    regexp: '^ZSH_THEME='
+    line: 'ZSH_THEME="parrot"'
+    backup: yes
+  when: ohmyzsh_installed.stat.exists or not ohmyzsh_installed.stat.exists
 
+- name: Add autosuggestions to .zshrc
+  lineinfile:
+    path: ~/.zshrc
+    line: 'source ~/.oh-my-zsh/custom/zsh-autosuggestions.zsh'
+    insertafter: EOF
+  when: ohmyzsh_installed.stat.exists or not ohmyzsh_installed.stat.exists
+
+- name: Change default shell to zsh
+  user:
+    name: "{{ ansible_user_id }}"
+    shell: /usr/bin/zsh
+  become: true
+  when: ohmyzsh_installed.stat.exists or not ohmyzsh_installed.stat.exists
+
+###
+# DOCKER INSTALLATION
+###
+
+- name: Install Docker CE
+  shell: "{{ docker_install }}"
+  args:
+        executable: /bin/bash
+  become: true
+
+###
+# ADDITIONAL APPLICATIONS
+###
+
+- name: Install additional applications (VSCode, Pi Imager, Obsidian)
+  shell: "{{ additional_apps }}"
+  args:
+        executable: /bin/bash
+
+###
+# KUBERNETES TOOLS
+###
+
+- name: Check if kubectl is already installed
+  command: which kubectl
+  register: kubectl_check
+  ignore_errors: true
+
+- name: Install kubectl
+  shell: |
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+    rm kubectl
+  args:
+        executable: /bin/bash
+  when: kubectl_check.rc != 0
+
+###
+# HASHICORP TOOLS
 ###
 
 - name: Install Vagrant and Terraform (latest)
@@ -82,6 +149,10 @@
   args:
         executable: /bin/bash
   become: true
+
+###
+# GRAPHICS AND WINE
+###
 
 - name: Make changes for graphics card
   shell: "{{ graphics_card }}"
@@ -96,7 +167,11 @@
   become: true
   ignore_errors: true
 
-- name: Download super slicer to app folder
+###
+# DEVELOPMENT TOOLS
+###
+
+- name: Download SuperSlicer to app folder
   get_url:
     url: https://github.com/supermerill/SuperSlicer/releases/download/2.3.56.9/SuperSlicer-ubuntu_18.04-2.3.56.9.AppImage
     dest: ~/Apps/SuperSlicer.AppImage
@@ -110,6 +185,132 @@
   with_lines: cat "{{ git_repos }}"
   ignore_errors: true
 
+###
+# PYTHON REQUIREMENTS
+###
+
+- name: Upgrade pip to latest version
+  pip:
+    name: pip
+    state: latest
+    executable: pip3
+
 - name: Install specified python requirements
   pip:
-        requirements: "{{ pip_requirements }}"
+    requirements: "{{ pip_requirements }}"
+    executable: pip3
+
+###
+# GESTURE SUPPORT (OPTIONAL)
+###
+
+- name: Install gesture support
+  shell: "{{ gestures_install }}"
+  args:
+        executable: /bin/bash
+  ignore_errors: true
+  when: gestures_install is defined
+
+###
+# SYSTEM CONFIGURATION
+###
+
+- name: Add user to important groups
+  user:
+    name: "{{ ansible_user_id }}"
+    groups: "{{ item }}"
+    append: yes
+  become: true
+  loop:
+    - docker
+    - sudo
+    - plugdev
+    - dialout
+  ignore_errors: true
+
+- name: Enable important services
+  systemd:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  become: true
+  loop:
+    - docker
+    - ssh
+  ignore_errors: true
+
+###
+# POST-INSTALLATION CLEANUP
+###
+
+- name: Clean up package cache
+  apt:
+    autoclean: yes
+    autoremove: yes
+  become: true
+
+- name: Update locate database
+  shell: sudo updatedb
+  ignore_errors: true
+
+###
+# FINAL INSTALLATION SUMMARY
+###
+
+- name: Display installation summary
+  debug:
+    msg: |
+      ========================================
+      🎉 INSTALLATION COMPLETE! 🎉
+      ========================================
+      
+      ✅ APPLICATIONS INSTALLED:
+      • Visual Studio Code
+      • Docker CE + Docker Compose  
+      • Kubernetes kubectl
+      • Raspberry Pi Imager
+      • Obsidian (~/Apps/Obsidian.AppImage)
+      • Python 3.11+ with pip
+      • Filezilla
+      • Wine + Windows app support
+      • HashiCorp Tools (Terraform, Vagrant)
+      • Security Tools (Nmap, Wireshark, etc.)
+      • Development Tools & Libraries
+      
+      ✅ SHELL CONFIGURATION:
+      • Oh My Zsh with Parrot theme
+      • Custom aliases and functions
+      • Auto-suggestions enabled
+      • Default shell changed to Zsh
+      
+      ✅ DIRECTORIES CREATED:
+      • ~/Apps (for AppImages and tools)
+      • ~/Projects (for your projects)
+      • ~/Apps/Tools (security tools cloned)
+      
+      ⚠️  IMPORTANT NEXT STEPS:
+      1. LOG OUT and LOG BACK IN for:
+         - Shell changes (Zsh)
+         - Docker group permissions
+         - All group membership changes
+      
+      2. REBOOT RECOMMENDED for:
+         - Graphics driver changes
+         - Kernel module updates
+         - Complete system integration
+      
+      3. TEST YOUR SETUP:
+         - Open terminal (should show Zsh with Parrot theme)
+         - Run: docker --version
+         - Run: kubectl version --client
+         - Run: code --version
+      
+      🛡️  SECURITY TOOLS:
+      Located in ~/Apps/Tools/ - Use responsibly!
+      
+      📚 DOCUMENTATION:
+      Check the repository README for detailed usage info
+      
+      ========================================
+      Happy coding! 🚀
+      ========================================

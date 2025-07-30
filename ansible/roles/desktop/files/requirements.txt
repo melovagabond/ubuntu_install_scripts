@@ -219,3 +219,42 @@ XlsxWriter
 xlwt
 zipp
 zope.interface
+
+# Docker and Kubernetes Python libraries
+docker>=6.0.0
+kubernetes>=25.0.0
+docker-compose>=1.29.0
+
+# Development and productivity
+requests>=2.28.0
+beautifulsoup4>=4.11.0
+selenium>=4.8.0
+pytest>=7.2.0
+black>=23.0.0
+flake8>=6.0.0
+
+# Data science and analysis
+pandas>=1.5.0
+numpy>=1.24.0
+matplotlib>=3.6.0
+jupyter>=1.0.0
+
+# Web development
+flask>=2.2.0
+fastapi>=0.95.0
+uvicorn>=0.20.0
+
+# DevOps and automation
+ansible>=7.0.0
+fabric>=3.0.0
+paramiko>=3.0.0
+
+# File processing
+openpyxl>=3.1.0
+pypdf2>=3.0.0
+python-docx>=0.8.11
+
+# Updated versions of existing packages
+urllib3>=1.26.14
+cryptography>=39.0.0
+pyyaml>=6.0

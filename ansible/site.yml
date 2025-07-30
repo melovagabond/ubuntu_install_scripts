@@ -13,6 +13,8 @@
     - hashi: ./roles/desktop/files/hashi.sh
     - graphics_card: ./roles/desktop/files/graphics_card.sh
     - wine: ./roles/desktop/files/wine_install.sh
+    - docker_install: ./roles/desktop/files/docker_install.sh
+    - additional_apps: ./roles/desktop/files/additional_apps.sh
     - files: ./roles/desktop/files
 
   roles:

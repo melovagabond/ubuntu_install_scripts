@@ -660,3 +660,28 @@ zenity-common
 zip
 zlib1g-dev
 zsh
+
+# Docker and container tools
+docker.io
+docker-compose
+docker-buildx
+
+# Kubernetes tools  
+kubectl
+
+# File transfer tools
+filezilla
+
+# Updated Python (these ensure latest Python 3.x)
+python3.11
+python3.11-dev
+python3.11-venv
+python3-pip
+python3-setuptools
+python3-wheel
+
+# Development tools
+curl
+wget
+git
+build-essential
