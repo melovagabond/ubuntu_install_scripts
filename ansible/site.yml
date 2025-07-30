@@ -3,6 +3,7 @@
 
 - name: Configure Local Machine from Fresh Install
   hosts: 127.0.0.1
+  connection: local
   gather_facts: true
   vars:
     - list_of_packages: ./roles/desktop/files/install_apps.txt
@@ -12,7 +13,7 @@
     - hashi: ./roles/desktop/files/hashi.sh
     - graphics_card: ./roles/desktop/files/graphics_card.sh
     - wine: ./roles/desktop/files/wine_install.sh
-    - files: ./role/desktop/files
+    - files: ./roles/desktop/files
 
   roles:
     - role: desktop

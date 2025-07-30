@@ -3,7 +3,7 @@
     repo: "{{ item }}"
     state: present
   with_lines: cat "{{ app_repos_list }}"
-  become: yes
+  become: true
 
 - name: update apt packages
   apt:
@@ -12,7 +12,7 @@
         autoclean: true
         autoremove: true
         update_cache: true
-  become: yes
+  become: true
 
 - name: install apt packages
   apt:
@@ -22,7 +22,7 @@
   register: apt_action
   retries: 100
   until: apt_action is success or ('Failed to lock apt for exclusive operation' not in apt_action.msg and '/var/lib/dpkg/lock' not in apt_action.msg)
-  become: yes
+  become: true
 
 
 - name: create Apps and Projects folder in home
@@ -31,13 +31,13 @@
     state: directory
     mode: '0755'
   loop:
-    - ~Apps
+    - ~/Apps
     - ~/Projects
     - ~/Apps/Tools
 
 - name: Make all .sh files executable
   shell: sh -c "chmod +x {{ files }}/*.sh"
-  become: yes
+  become: true
   
 ###
 # OH-MY-ZSH INSTALL
@@ -73,7 +73,7 @@
 #   shell: chsh -s $(which zsh)
 #   args:
 #         executable: /bin/bash
-#   ignore_errors: yes
+#   ignore_errors: true
 
 ###
 
@@ -81,33 +81,34 @@
   shell: "{{ hashi }}"
   args:
         executable: /bin/bash
-  become: yes
+  become: true
 
 - name: Make changes for graphics card
   shell: "{{ graphics_card }}"
   args:
         executable: /bin/bash
-  become: yes
+  become: true
 
 - name: Install Wine
   shell: "{{ wine }}"
   args:
         executable: /bin/bash
-  become: yes
-  ignore_errors: yes
+  become: true
+  ignore_errors: true
 
 - name: Download super slicer to app folder
-  shell: wget -O https://github.com/supermerill/SuperSlicer/releases/download/2.3.56.9/SuperSlicer-ubuntu_18.04-2.3.56.9.AppImage ~/Apps/
-  args:
-        executable: /bin/bash
-  ignore_errors: yes
+  get_url:
+    url: https://github.com/supermerill/SuperSlicer/releases/download/2.3.56.9/SuperSlicer-ubuntu_18.04-2.3.56.9.AppImage
+    dest: ~/Apps/SuperSlicer.AppImage
+    mode: '0755'
+  ignore_errors: true
 
 - name: Clone Git repos
   git:
-    repo: "{{ item }}"
-    dest: ~/Apps/Tools/{{ item }}
+    repo: "{{ item.split()[0] }}"
+    dest: "~/Apps/Tools/{{ item.split()[1] if item.split()|length > 1 else item.split()[0].split('/')[-1].replace('.git', '') }}"
   with_lines: cat "{{ git_repos }}"
-  ignore_errors: yes
+  ignore_errors: true
 
 - name: Install specified python requirements
   pip:
